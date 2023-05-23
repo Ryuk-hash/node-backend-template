@@ -1,16 +1,18 @@
 const mongoose = require('mongoose');
 const httpStatus = require('http-status');
+
 const config = require('../config/config');
 const logger = require('../config/logger');
-const ApiError = require('../utils/ApiError');
+const LogzIoLogger = require('../config/winstonLogger');
+const AppError = require('../utils/appError');
 
 const errorConverter = (err, req, res, next) => {
   let error = err;
-  if (!(error instanceof ApiError)) {
+  if (!(error instanceof AppError)) {
     const statusCode =
       error.statusCode || error instanceof mongoose.Error ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR;
     const message = error.message || httpStatus[statusCode];
-    error = new ApiError(statusCode, message, false, err.stack);
+    error = new AppError(statusCode, message, false, 'apiError', err.stack);
   }
   next(error);
 };
@@ -28,17 +30,21 @@ const errorHandler = (err, req, res, next) => {
   const response = {
     code: statusCode,
     message,
-    ...(config.env === 'development' && { stack: err.stack }),
+    ...(config.env === 'development' && { type: err.type, stack: err.stack })
   };
 
-  if (config.env === 'development') {
-    logger.error(err);
-  }
+  if (config.env === 'development' && logger) logger.error(err);
+
+  if (config.env !== 'development' && LogzIoLogger)
+    LogzIoLogger.error(`HTTP:${req.method} - ${err.statusCode} - ${req.originalUrl} - message: ${err.message}`, {
+      'res.statusCode': err.statusCode,
+      'req.method': req.method,
+      rawError: err.rawError,
+      user: req.user,
+      error: { code: err.code, type: err.type, message: err.message }
+    });
 
   res.status(statusCode).send(response);
 };
 
-module.exports = {
-  errorConverter,
-  errorHandler,
-};
+module.exports = { errorConverter, errorHandler };

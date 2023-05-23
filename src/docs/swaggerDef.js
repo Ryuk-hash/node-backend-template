@@ -1,21 +1,18 @@
-const { version } = require('../../package.json');
+const { license, version, name } = require('../../package.json');
 const config = require('../config/config');
 
 const swaggerDef = {
   openapi: '3.0.0',
   info: {
-    title: 'node-express-boilerplate API documentation',
+    title: name,
+    description: 'MathonGo | [GitHub](https://github.com/Ryuk-hash/node-backend-template)',
     version,
-    license: {
-      name: 'MIT',
-      url: 'https://github.com/hagopj13/node-express-boilerplate/blob/master/LICENSE',
-    },
+    license: { name: license }
   },
   servers: [
-    {
-      url: `http://localhost:${config.port}/v1`,
-    },
-  ],
+    { url: `http://localhost:${config.port}/v1`, description: 'Development server' }
+    // { url: `http://staging-url/v1`, description: 'Staging server' },
+  ]
 };
 
 module.exports = swaggerDef;

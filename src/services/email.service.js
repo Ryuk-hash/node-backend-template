@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+
 const config = require('../config/config');
 const logger = require('../config/logger');
 
@@ -59,5 +60,5 @@ module.exports = {
   transport,
   sendEmail,
   sendResetPasswordEmail,
-  sendVerificationEmail,
+  sendVerificationEmail
 };

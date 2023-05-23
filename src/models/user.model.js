@@ -1,16 +1,13 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+
 const { toJSON, paginate } = require('./plugins');
 const { roles } = require('../config/roles');
 
 const userSchema = mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    name: { type: String, required: true, trim: true },
     email: {
       type: String,
       required: true,
@@ -18,10 +15,8 @@ const userSchema = mongoose.Schema(
       trim: true,
       lowercase: true,
       validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error('Invalid email');
-        }
-      },
+        if (!validator.isEmail(value)) throw new Error('Invalid email');
+      }
     },
     password: {
       type: String,
@@ -33,24 +28,14 @@ const userSchema = mongoose.Schema(
           throw new Error('Password must contain at least one letter and one number');
         }
       },
-      private: true, // used by the toJSON plugin
+      private: true
     },
-    role: {
-      type: String,
-      enum: roles,
-      default: 'user',
-    },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
+    role: { type: String, enum: roles, default: 'user' },
+    isEmailVerified: { type: Boolean, default: false }
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-// add plugin that converts mongoose to json
 userSchema.plugin(toJSON);
 userSchema.plugin(paginate);
 

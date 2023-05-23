@@ -1,12 +1,101 @@
-# Dependencies
-node_modules
+############################
+# Node.js
+############################
+.env
+package-lock.json
+yarn.lock
+.vscode/
+swagger.json
+lib-cov
+lcov.info
+pids
+logs
+results
+node_modules/
+.node_history
+envs/*
 
-# yarn error logs
-yarn-error.log
+############################
+# OS X
+############################
 
-# Environment varibales
-.env*
-!.env*.example
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+.Spotlight-V100
+.Trashes
+._*
 
-# Code coverage
-coverage
+
+############################
+# Linux
+############################
+
+*~
+
+
+############################
+# Windows
+############################
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+
+
+############################
+# Packages
+############################
+
+*.7z
+*.csv
+*.dat
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.seed
+*.so
+*.swo
+*.swp
+*.swn
+*.swm
+*.out
+*.pid
+
+
+############################
+# Logs and databases
+############################
+
+.tmp
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+
+
+############################
+# Misc.
+############################
+
+*#
+ssl
+.idea
+nbproject
+public/uploads/*
+!public/uploads/.gitkeep
