@@ -28,6 +28,13 @@ const errorHandler = (err, req, res, next) => {
   res.locals.errorMessage = err.message;
 
   const response = {
+    httpResponse: {
+      code: statusCode,
+      class: httpStatus[`${statusCode}_CLASS`],
+      name: httpStatus[`${statusCode}_NAME`],
+      message: httpStatus[`${statusCode}_MESSAGE`]
+    },
+    success: false,
     code: statusCode,
     message,
     ...(config.env === 'development' && { type: err.type, stack: err.stack })
